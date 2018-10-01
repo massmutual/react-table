@@ -91,5 +91,6 @@ export const TablePropType = {
     column: string,
     direction: string,
     callbacks: object,
+    resetPagination: bool,
     paginationEventListener: func,
 };

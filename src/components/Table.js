@@ -30,6 +30,7 @@ export class Table extends Component {
             callbacks = {},
             showSearch = false,
             showPagination = false,
+            resetPagination = true,
             paginationEventListener = null,
             totalPages = (rows.length === 0) ? 1 : Math.ceil(rows.length / rowSize),
             CustomPagination = null,
@@ -57,6 +58,7 @@ export class Table extends Component {
             callbacks,
             showSearch,
             showPagination,
+            resetPagination,
             paginationEventListener,
             CustomPagination,
             icons,
@@ -89,7 +91,7 @@ export class Table extends Component {
                 rows,
                 pagination: {
                     ...currentState.pagination,
-                    currentPage: 1,
+                    currentPage: currentState.resetPagination ? 1 : currentState.pagination.currentPage,
                     totalPages: (rows.length === 0) ? 1 : Math.ceil(rows.length / currentState.pagination.rowSize)
                 }
             }
