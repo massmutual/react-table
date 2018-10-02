@@ -6,6 +6,7 @@ import * as searchActions from '../../actions/SearchActions';
 import * as resizeTableActions from '../../actions/ResizeTableActions';
 import * as tableActions from '../../actions/TableActions';
 import TextInputPagination from '../../../stories/TextInputPagination';
+import CustomSearch from '../../../stories/CustomSearch';
 
 //Testing
 import { mount, shallow, } from 'enzyme';
@@ -98,6 +99,14 @@ describe('Table', () => {
         const paginations = wrapper.find('TextInputPagination');
 
         expect(paginations.length).toBe(1);
+    });
+
+    it('should render a Custom Search component', () => {
+        props = { ...props, showSearch: true, CustomSearch: CustomSearch };
+        wrapper = shallow(<Table { ...props }/>);
+        const searchs = wrapper.find('CustomSearch');
+
+        expect(searchs.length).toBe(1);
     });
 
     it('should render correctly with no rows', () => {

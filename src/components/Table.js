@@ -34,6 +34,7 @@ export class Table extends Component {
             paginationEventListener = null,
             totalPages = (rows.length === 0) ? 1 : Math.ceil(rows.length / rowSize),
             CustomPagination = null,
+            CustomSearch = null,
             icons = null,
             id = null,
             theme = 'react-collapsible-theme'
@@ -61,6 +62,7 @@ export class Table extends Component {
             resetPagination,
             paginationEventListener,
             CustomPagination,
+            CustomSearch,
             icons,
             id,
             theme,
@@ -161,6 +163,7 @@ export class Table extends Component {
             showSearch,
             showPagination,
             CustomPagination,
+            CustomSearch,
             icons,
             id,
             theme,
@@ -183,9 +186,14 @@ export class Table extends Component {
                               previousPage={ this.previousPage } />
                 : null;
 
-        const SearchComponent = showSearch && <Search searchString={ this.state.searchString }
-                                                      searchRows={ this.searchRows }
-                                                      clearSearch={ this.clearSearch } />;
+        const SearchElement = CustomSearch || Search;
+        const SearchComponent = showSearch ? 
+            <SearchElement 
+                searchString={ this.state.searchString }
+                searchRows={ this.searchRows } 
+                clearSearch={ this.clearSearch }
+            /> :
+            null;
 
         return (
             <div className={theme}>

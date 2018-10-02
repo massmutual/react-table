@@ -86,8 +86,6 @@ These objects also have several optional attributes that can make the cells disp
 This is a boolean to tell the table whether or not show the search component
 ##### showPagination (default: false)
 This is a boolean to tell the table whether or not show the pagination component
-##### resetPagination (default: true)
-This is a boolean to tell the table whether or not reset the pagination when table properties change. This can be used when a new row is added to the table.
 ##### rowSize (default: 15)
 This is a number that tells the table how many rows it should display on a table.
 ##### currentPage (default: 1)
@@ -114,6 +112,14 @@ This function will receive:
   - Let the user specify the page they want to go to with onChange and it will pick up your value. example `<input onChange={ goToPage } />` 
   - Specify the exact page by giving it a newPage value. example `goToPage({ newPage: 25 })`
 - `inputtedPage`: The value to use for `goToPage` function if you are allowing a user to input a value. example `<input value={ inputtedPage } onChange={ goToPage } />`
+### CustomSort
+This is a function that you can pass to the table when you don't want to use the built in sort component. You will still need to have `showSort` set to true.
+
+This function will receive:
+- `searchString`: String to search for
+- `searchRows`: Search function that will be used for the search. This can be reused or extended as needed
+- `clearSearch`: Clear selection
+searchString, searchRows, clearSearch
 
 ##### icons
 This is an object that allows you to customize the ascending and decending icons on the columns and the open and close row icons on the rows

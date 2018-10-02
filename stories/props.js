@@ -4,6 +4,7 @@ import moment from 'moment';
 import Button from './button';
 import Link from './link';
 import TextInputPagination from './TextInputPagination';
+import CustomSearch from './CustomSearch';
 import ArrowUp from 'react-icons/lib/fa/arrow-up';
 import ArrowDown from 'react-icons/lib/fa/arrow-down';
 
@@ -131,6 +132,13 @@ export const customPaginationComponent = {
     showPagination: true,
     showSearch: true,
     CustomPagination: TextInputPagination,
+};
+
+export const customSortComponent = {
+    columns: getColumns(),
+    rows: generateFakeData({ totalRows: 1000 }),
+    showSearch: true,
+    CustomSearch: CustomSearch,
 };
 
 export const customIconProps = {

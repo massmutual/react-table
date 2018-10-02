@@ -13,6 +13,7 @@ import {
     paginationListenerProps,
     sortableColumnsProps,
     customPaginationComponent,
+    customSortComponent,
     customIconProps,
     differentTheme,
     unsorted,
@@ -28,6 +29,7 @@ storiesOf('React Collapsing Table', module)
     .add('Set a pagination listener function', () => <ReactCollapsingTable {...paginationListenerProps} />)
     .add('Only certain columns can be sorted on', () => <ReactCollapsingTable {...sortableColumnsProps} />)
     .add('Custom Text Input Pagination', () => <ReactCollapsingTable {...customPaginationComponent} />)
+    .add('Custom Sort', () => <ReactCollapsingTable {...customSortComponent} />)
     .add('Custom Icons for the open/close row and de/ascending icon', () => <ReactCollapsingTable {...customIconProps} />)
     .add('Columns with sort feature disabled', () => <ReactCollapsingTable {...unsorted} />)
     .add('Custom theme, no applied styles', () => <ReactCollapsingTable {...differentTheme} />);
