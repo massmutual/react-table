@@ -86,6 +86,8 @@ These objects also have several optional attributes that can make the cells disp
 This is a boolean to tell the table whether or not show the search component
 ##### showPagination (default: false)
 This is a boolean to tell the table whether or not show the pagination component
+##### resetPagination (default: true)
+This is a boolean to tell the table whether or not reset the pagination when table properties change. This can be used when a new row is added to the table.
 ##### rowSize (default: 15)
 This is a number that tells the table how many rows it should display on a table.
 ##### currentPage (default: 1)
