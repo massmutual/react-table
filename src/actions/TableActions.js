@@ -55,6 +55,22 @@ export const changeRowOrder = ({ column, state }) => {
     const [columnBeingSorted, ...b] = columns.filter(c => c.accessor === column);
     const type = (columnBeingSorted && columnBeingSorted.sortable !== false) ? columnBeingSorted.sortType : null;
 
+    /*
+     * fix for - when all content of a column same ascending does nothing while descending
+     * reverses the row 
+     * below method will check for if content of column are same 
+    */
+    const isColumnContentSame = ()=>{
+        let urows= rows.map((row)=>{
+                return row[column]
+        })
+        return new Set(urows).size == 1 || false 
+    }
+    // if content of column are same then reverse the return revered rows
+    if(isColumnContentSame()){
+        return { sortedRows: rows.reverse() };  
+    }
+
     switch (direction) {
         case 'ascending':
             rows.sort(dynamicSort({ column, type }));
