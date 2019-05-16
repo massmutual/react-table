@@ -5,14 +5,16 @@ import { TablePropType } from '../utils/propTypes';
 import Search from './Search';
 import Columns from './Columns';
 import Rows from './Rows';
+import Footer from './Footer'
 import Pagination from './Pagination';
-import { calculateRows, sortColumn, nextPage, previousPage, goToPage, expandRow, setInputtedPage } from '../actions/TableActions'
+import { calculateRows, sortColumn, nextPage, previousPage, goToPage, expandRow, setInputtedPage, getFooterRow, setFooterRow, getTotalOfFooterColumns } from '../actions/TableActions'
 import { resizeTable } from '../actions/ResizeTableActions'
 import { searchRows, clearSearch, toggleSearchInputIcons } from '../actions/SearchActions';
 import throttle from 'lodash.throttle';
 import cloneDeep from 'lodash.clonedeep';
 
 const ENTER_WAS_PRESSED = 13;
+const IS_FOOTER_INDEX = -1;
 
 export class Table extends Component {
     constructor(props) {
@@ -28,6 +30,7 @@ export class Table extends Component {
             }).accessor,
             direction = 'ascending',
             callbacks = {},
+            footerCallback = {},
             showSearch = false,
             showPagination = false,
             paginationEventListener = null,
@@ -57,6 +60,7 @@ export class Table extends Component {
                 direction,
             },
             callbacks,
+            footerCallback,
             showSearch,
             showPagination,
             paginationEventListener,
@@ -66,6 +70,8 @@ export class Table extends Component {
             theme,
             showSearchIcon,
             showClearIcon,
+            totalFooter: {},
+            footerRow:{}
         };
 
         this.resizeTable = this.resizeTable.bind(this);
@@ -80,6 +86,10 @@ export class Table extends Component {
 
     componentWillMount(){
         window.addEventListener('resize', throttle(this.resizeTable, 150));
+        const { rows, footerCallback, columns } = this.state
+        const totalFooter  = rows.reduce((previousRow, currentRow, i) => getTotalOfFooterColumns(previousRow, currentRow, i, Object.keys(footerCallback)))
+        const footerRow = getFooterRow(columns)
+        this.setState({totalFooter, footerRow})
     }
 
     componentDidMount(){
@@ -142,9 +152,15 @@ export class Table extends Component {
     }
 
     expandRow({ rowIndex }) {
-        this.setState(currentState => {
-            return expandRow({ rowIndex, state: currentState })
-        });
+        if(IS_FOOTER_INDEX === rowIndex){
+            let { footerRow } = this.state
+            footerRow['isOpen'] = !footerRow['isOpen']
+            this.setState({ footerRow })
+        } else {
+            this.setState(currentState => {
+                return expandRow({ rowIndex, state: currentState })
+            });
+        }
     }
 
     searchRows({ target: { value }}) {
@@ -184,6 +200,7 @@ export class Table extends Component {
         const displayedRows = calculateRows({ state: this.state });
         const visibleColumns = Object.assign([], columns.filter(column => column.isVisible));
         const hiddenColumns = Object.assign([], columns.filter(column => !column.isVisible));
+        const displayedFooterRow = setFooterRow({ state: this.state, currentPage: displayedRows });
 
         const PaginationComponent = showPagination && CustomPagination
             ? <CustomPagination currentPage={ currentPage }
@@ -219,6 +236,18 @@ export class Table extends Component {
                           hiddenColumns={ hiddenColumns }
                           expandRow={ this.expandRow }
                           callbacks={ callbacks } />
+                          
+                    {
+                        displayedFooterRow ?
+                            <Footer
+                                icons={icons}
+                                footerRow={displayedFooterRow}
+                                visibleColumns={visibleColumns}
+                                hiddenColumns={hiddenColumns}
+                                expandRow={this.expandRow}
+                            />
+                            : null
+                    }
                 </table>
                 { PaginationComponent }
             </div>
