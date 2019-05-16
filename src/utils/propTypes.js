@@ -93,3 +93,10 @@ export const TablePropType = {
     callbacks: object,
     paginationEventListener: func,
 };
+
+export const FooterPropType = {
+    footerRow: object.isRequired,
+    visibleColumns: Columns.isRequired,
+    hiddenColumns: Columns.isRequired,
+    expandRow: func.isRequired,
+};
