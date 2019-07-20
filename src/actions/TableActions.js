@@ -6,7 +6,7 @@ export const calculateRows = ({ state }) => {
     } = state;
     let selectedRows = [];
     //pagination
-    if( rows.length > 0 ) {
+    if (rows.length > 0) {
         const startingPoint = ((currentPage - 1) * rowSize);
         const endingPoint = startingPoint + rowSize;
         selectedRows = rows.slice(startingPoint, endingPoint);
@@ -27,7 +27,7 @@ export const changeSortFieldAndDirection = ({ newColumn, state }) => {
     let newDirection;
     const { sort: { column, direction } } = state;
 
-    if(column === newColumn) {
+    if (column === newColumn) {
         switch (direction) {
             case 'none':
                 newDirection = 'ascending';
@@ -131,15 +131,15 @@ export const checkPageState = ({ newPage, currentPage, totalPages, shouldCall })
     const isNotANumber = isNaN(newPage);
     const isEmpty = newPage.length === 0;
 
-    if(isNotANumber) {
+    if (isNotANumber) {
         return currentPage;
-    } else if( isZero && shouldCall) {
+    } else if (isZero && shouldCall) {
         return currentPage;
-    } else if(isBelowZero) {
+    } else if (isBelowZero) {
         return 1;
-    } else if(isAboveTotalPages) {
+    } else if (isAboveTotalPages) {
         return totalPages;
-    } else if(isEmpty && shouldCall){
+    } else if (isEmpty && shouldCall) {
         return currentPage;
     } else {
         return newPage;
@@ -147,8 +147,8 @@ export const checkPageState = ({ newPage, currentPage, totalPages, shouldCall })
 };
 
 export const changePage = ({ state, currentPage }) => {
-    const pagination = { ...state.pagination, currentPage, inputtedPage: currentPage } ;
-    if(state.paginationEventListener) state.paginationEventListener({ pagination });
+    const pagination = { ...state.pagination, currentPage, inputtedPage: currentPage };
+    if (state.paginationEventListener) state.paginationEventListener({ pagination });
     return { ...state, pagination }
 };
 
@@ -160,79 +160,3 @@ export const expandRow = ({ rowIndex, state }) => {
     });
     return { ...state, rows: newRows };
 };
-
-/**
- * Returns only the structure to save it in the state
- * */
-export const getFooterRow = columns => {
-    const footerRow = {
-        // Getting values from each column field
-        ...columns.reduce((b, c, i) => {
-            if (i === 1)
-                b = { [b['accessor']]: '' }
-
-            return Object.assign(b, { [c['accessor']]: '' })
-        }),
-        isOpen: false,
-    }
-    return footerRow
-}
-
-/**
- * When the state has a change because the value of the table
- * was changed, the footer row will be builded 
- * with the new data in the table
- */
-export const setFooterRow = ({state, currentPage}) => {
-    const { footerRow, totalFooter, footerCallback } = state
-
-    // getting the footer fields
-    const fieldsToSum = Object.keys(footerCallback)
-
-    // If the footer fields are 0, then the footer will not appear in the table
-    if(fieldsToSum.length === 0)
-        return false
-
-    // Creating the footer row 
-    const fullFooterRow = {
-        ...footerRow,
-        // Getting total values for each field that contain a footerCallback function
-        ...currentPage.reduce((beforeRow, currentRow, i) => getTotalOfFooterColumns(beforeRow, currentRow, i, fieldsToSum)),
-    }
-
-    // Setting each field of the footer with own callback function and passing the reults
-    fieldsToSum.forEach(field => {
-        const totals = {
-            currentPage: {
-                total: fullFooterRow[field].totalValue,
-                values: fullFooterRow[field].values,
-            },
-            allPages: {
-                total: Object.keys(totalFooter).length !== 0 ? totalFooter[field].totalValue : [],
-                values: Object.keys(totalFooter).length !== 0 ? totalFooter[field].values : [],
-            }
-        }
-        fullFooterRow[field] = footerCallback[field](totals)
-    })
-    return fullFooterRow
-}
-
-// Getting the total result for each column
-export const getTotalOfFooterColumns = (beforeRow, currentRow, i, fieldsToSum) => {
-	let obj = {}
-	let newField = {}
-
-	fieldsToSum.forEach(field => {
-		if (currentRow || beforeRow) {
-			newField = {
-				[field]: {
-					totalValue: (parseFloat(beforeRow[field]['totalValue']) || 0) + (parseFloat(currentRow[field]) || 0),
-					values: (i === 1) ? [beforeRow[field]] : beforeRow[field]['values'],
-				}
-			}
-			newField[field]['values'].push(currentRow[field])
-		}
-		Object.assign(obj, newField)
-	})
-	return obj
-}
