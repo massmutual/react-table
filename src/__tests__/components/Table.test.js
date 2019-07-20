@@ -290,4 +290,9 @@ describe('Table', () => {
         expect(wrapper.state().showSearchIcon).toBe(false);
         expect(wrapper.state().showClearIcon).toBe(true);
     });
+
+    it('should expandRow be footer index', () => {
+        instance.expandRow({ rowIndex: -1 });
+        expect(wrapper.state().footerRow["isOpen"]).toBe(true);
+    });
 });
