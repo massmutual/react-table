@@ -7,7 +7,8 @@ import Columns from './Columns';
 import Rows from './Rows';
 import Footer from './Footer'
 import Pagination from './Pagination';
-import { calculateRows, sortColumn, nextPage, previousPage, goToPage, expandRow, setInputtedPage, getFooterRow, setFooterRow, getTotalOfFooterColumns } from '../actions/TableActions'
+import { calculateRows, sortColumn, nextPage, previousPage, goToPage, expandRow, setInputtedPage } from '../actions/TableActions'
+import { getFooterRow, setFooterRow, getTotalOfFooterColumns } from '../actions/FooterActions'
 import { resizeTable } from '../actions/ResizeTableActions'
 import { searchRows, clearSearch, toggleSearchInputIcons } from '../actions/SearchActions';
 import throttle from 'lodash.throttle';
@@ -87,7 +88,7 @@ export class Table extends Component {
     componentWillMount(){
         window.addEventListener('resize', throttle(this.resizeTable, 150));
         const { rows, footerCallback, columns } = this.state
-        const totalFooter  = rows.reduce((previousRow, currentRow, i) => getTotalOfFooterColumns(previousRow, currentRow, i, Object.keys(footerCallback)))
+        const totalFooter  = rows.length > 0 ? rows.reduce((previousRow, currentRow, i) => getTotalOfFooterColumns(previousRow, currentRow, i, Object.keys(footerCallback))) : []
         const footerRow = getFooterRow(columns)
         this.setState({totalFooter, footerRow})
     }
