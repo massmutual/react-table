@@ -75,7 +75,7 @@ describe('Footer', () => {
 
     it('should have 1 rows', () => {
         const rows = wrapper.find('Row');
-
+        console.log('rows.length :', rows.length);
         expect(rows.length).toBe(1);
     });
 
