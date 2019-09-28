@@ -17,7 +17,7 @@ const Row = ({ row, visibleColumns, hiddenColumns, expandRow, rowIndex, callback
                      accessor={ accessor }
                      expandRow={ expandRow }
                      hiddenColumnsLength={ hiddenColumnsLength }
-                     CustomComponent={ CustomComponent }
+                     CustomComponent={ rowIndex === -1 ? undefined : CustomComponent }
                      CustomFunction={ callbacks[accessor] } />
     });
 

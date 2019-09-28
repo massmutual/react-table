@@ -21,12 +21,16 @@ describe('Table', () => {
                 { accessor: 'firstName', label: 'First Name', isVisible: true, minWidth: 100, priorityLevel: 3, position: 1, },
                 { accessor: 'lastName', label: 'Last Name', isVisible: true, minWidth: 50, priorityLevel: 1, position: 2, },
                 { accessor: 'email', label: 'Email', isVisible: false, minWidth: 90, priorityLevel: 3, position: 3, },
+                { accessor: 'age', label: 'Age', isVisible: true, minWidth: 50, priorityLevel: 3, position: 4, },
             ],
             rows: [
-                { firstName: 'Paul', lastName: 'Darragh', isOpen: true },
-                { firstName: 'Matt', lastName: 'Smith', isOpen: true },
-                { firstName: 'Michelle', lastName: 'Piper', isOpen: true },
+                { firstName: 'Paul', lastName: 'Darragh', isOpen: true, age: 11 },
+                { firstName: 'Matt', lastName: 'Smith', isOpen: true, age: 12 },
+                { firstName: 'Michelle', lastName: 'Piper', isOpen: true, age: 13 },
             ],
+            footerCallback: {
+                age: ({ allPages }) => allPages.total,
+            }
         };
 
         searchActions.clearSearch = jest.fn();
@@ -40,12 +44,12 @@ describe('Table', () => {
         tableActions.previousPage = jest.fn();
         tableActions.expandRow = jest.fn();
 
-        wrapper = shallow(<Table { ...props } />);
+        wrapper = shallow(<Table {...props} />);
         instance = wrapper.instance();
     });
 
     it('should have all of the basic default table components', () => {
-        wrapper = mount(<Table { ...props }/>);
+        wrapper = mount(<Table {...props} />);
         const searches = wrapper.find('Search');
         const columns = wrapper.find('Columns');
         const rows = wrapper.find('Rows');
@@ -59,7 +63,7 @@ describe('Table', () => {
 
     it('should render Search component', () => {
         props = { ...props, showSearch: true };
-        wrapper = shallow(<Table { ...props }/>);
+        wrapper = shallow(<Table {...props} />);
         const searches = wrapper.find('Search');
 
         expect(searches.length).toBe(1);
@@ -67,7 +71,7 @@ describe('Table', () => {
 
     it('should render Pagination component', () => {
         props = { ...props, showPagination: true };
-        wrapper = shallow(<Table { ...props }/>);
+        wrapper = shallow(<Table {...props} />);
 
         const paginations = wrapper.find('Pagination');
 
@@ -76,7 +80,7 @@ describe('Table', () => {
 
     it('should not render Search component', () => {
         props = { ...props, showSearch: false };
-        wrapper = shallow(<Table { ...props }/>);
+        wrapper = shallow(<Table {...props} />);
         const searches = wrapper.find('Search');
 
         expect(searches.length).toBe(0);
@@ -84,7 +88,7 @@ describe('Table', () => {
 
     it('should not render Pagination component', () => {
         props = { ...props, showPagination: false };
-        wrapper = shallow(<Table { ...props }/>);
+        wrapper = shallow(<Table {...props} />);
 
         const paginations = wrapper.find('Pagination');
 
@@ -93,7 +97,7 @@ describe('Table', () => {
 
     it('should render a Custom Pagination component', () => {
         props = { ...props, showPagination: true, CustomPagination: TextInputPagination };
-        wrapper = shallow(<Table { ...props }/>);
+        wrapper = shallow(<Table {...props} />);
 
         const paginations = wrapper.find('TextInputPagination');
 
@@ -110,7 +114,7 @@ describe('Table', () => {
                 { accessor: 'email', label: 'Email', isVisible: false, minWidth: 90, priorityLevel: 3, position: 3, },
             ],
         };
-        wrapper = mount(<Table { ...props }/>);
+        wrapper = mount(<Table {...props} />);
         const searches = wrapper.find('Search');
         const columns = wrapper.find('Columns');
         const rows = wrapper.find('Rows');
@@ -123,7 +127,7 @@ describe('Table', () => {
     });
 
     it('should test all of the Search Actions', () => {
-        instance.searchRows({ target: { value: 'Tim' }});
+        instance.searchRows({ target: { value: 'Tim' } });
         expect(searchActions.searchRows).toHaveBeenCalled();
 
         instance.clearSearch();
@@ -174,7 +178,7 @@ describe('Table', () => {
         const didMount = jest.spyOn(Table.prototype, 'componentDidMount');
         const willUnmount = jest.spyOn(Table.prototype, 'componentWillUnmount');
 
-        wrapper = mount(<Table { ...props } />);
+        wrapper = mount(<Table {...props} />);
         instance = wrapper.instance();
 
         expect(willMount).toHaveBeenCalled();
@@ -190,7 +194,7 @@ describe('Table', () => {
         const willReceiveProps = jest.spyOn(Table.prototype, 'componentWillReceiveProps');
         props = { ...props, rowSize: 3, };
 
-        wrapper = mount(<Table { ...props } />);
+        wrapper = mount(<Table {...props} />);
         instance = wrapper.instance();
 
         expect(wrapper.state().rows.length).toBe(3);
@@ -206,7 +210,7 @@ describe('Table', () => {
     it('should test that when an empty array of rows is passed to the table that it updates the totalPages to 1', () => {
         props = { ...props, rowSize: 2, };
 
-        wrapper = mount(<Table { ...props } />);
+        wrapper = mount(<Table {...props} />);
         instance = wrapper.instance();
 
         expect(wrapper.state().rows.length).toBe(3);
@@ -227,8 +231,8 @@ describe('Table', () => {
                 { accessor: 'email', label: 'email', minWidth: 90, priorityLevel: 3, position: 3, },
             ],
         };
-        wrapper = mount(<Table { ...props }/>);
-        const [ firstName, lastName, email] = wrapper.state().columns;
+        wrapper = mount(<Table {...props} />);
+        const [firstName, lastName, email] = wrapper.state().columns;
 
         expect(firstName.sortable).toBe(true);
         expect(lastName.sortable).toBe(false);
@@ -237,40 +241,40 @@ describe('Table', () => {
 
     it('should allow to change columns after beeing mounted', () => {
         wrapper = mount(<Table {...props} />)
-        
-        expect(wrapper.state().columns.length).toBe(3)
-        expect(wrapper.find('thead th')).toHaveLength(3)
+
+        expect(wrapper.state().columns.length).toBe(4)
+        expect(wrapper.find('thead th')).toHaveLength(4)
 
         // all of a sudden, there is only 2 columns
         wrapper.setProps({ columns: props.columns.slice(1) })
 
-        expect(wrapper.state().columns.length).toBe(2)
-        expect(wrapper.find('thead th')).toHaveLength(2)
+        expect(wrapper.state().columns.length).toBe(3)
+        expect(wrapper.find('thead th')).toHaveLength(3)
     });
 
     it('should be able to handle a sortable new column', () => {
         wrapper = mount(<Table {...props} />)
 
-        expect(wrapper.state().columns.length).toBe(3)
-        expect(wrapper.find('thead th')).toHaveLength(3)
+        expect(wrapper.state().columns.length).toBe(4)
+        expect(wrapper.find('thead th')).toHaveLength(4)
 
         // all of a sudden, there is only 2 columns
         const newColumns = [
-            ...props.columns, 
-            { 
-                accessor: 'newColumn', 
-                label: 'New Column', 
-                isVisible: true, 
+            ...props.columns,
+            {
+                accessor: 'newColumn',
+                label: 'New Column',
+                isVisible: true,
                 sortable: true,
-                minWidth: 100, 
-                priorityLevel: 3, 
-                position: 1, 
+                minWidth: 100,
+                priorityLevel: 3,
+                position: 1,
             }
         ]
         wrapper.setProps({ columns: newColumns })
 
-        expect(wrapper.state().columns.length).toBe(4)
-        expect(wrapper.find('thead th')).toHaveLength(4)
+        expect(wrapper.state().columns.length).toBe(5)
+        expect(wrapper.find('thead th')).toHaveLength(5)
     });
 
     it('should show search icon when the input field is empty', () => {
@@ -285,5 +289,10 @@ describe('Table', () => {
         instance.toggleSearchInputIcons(searchValue);
         expect(wrapper.state().showSearchIcon).toBe(false);
         expect(wrapper.state().showClearIcon).toBe(true);
+    });
+
+    it('should expandRow be footer index', () => {
+        instance.expandRow({ rowIndex: -1 });
+        expect(wrapper.state().footerRow["isOpen"]).toBe(true);
     });
 });

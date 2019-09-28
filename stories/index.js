@@ -16,6 +16,8 @@ import {
     customIconProps,
     differentTheme,
     unsorted,
+    footerCallbackProps,
+    CustomComponentAndfooterCallbackProps
 } from './props';
 
 storiesOf('React Collapsing Table', module)
@@ -37,4 +39,6 @@ storiesOf('React Collapsing Table', module)
     .add('Dynamic table columns', () => {
         const dynamicColumns = basicTableProps.columns.filter(column => boolean(column.label, true))
         return <ReactCollapsingTable {...basicTableProps} columns={dynamicColumns} />
-    });
+    })
+    .add('Footer Callback', () => <ReactCollapsingTable {...footerCallbackProps} />)
+    .add('Set The custom Component and Footer Callback', () => <ReactCollapsingTable {...CustomComponentAndfooterCallbackProps} />);

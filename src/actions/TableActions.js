@@ -6,7 +6,7 @@ export const calculateRows = ({ state }) => {
     } = state;
     let selectedRows = [];
     //pagination
-    if( rows.length > 0 ) {
+    if (rows.length > 0) {
         const startingPoint = ((currentPage - 1) * rowSize);
         const endingPoint = startingPoint + rowSize;
         selectedRows = rows.slice(startingPoint, endingPoint);
@@ -27,7 +27,7 @@ export const changeSortFieldAndDirection = ({ newColumn, state }) => {
     let newDirection;
     const { sort: { column, direction } } = state;
 
-    if(column === newColumn) {
+    if (column === newColumn) {
         switch (direction) {
             case 'none':
                 newDirection = 'ascending';
@@ -131,15 +131,15 @@ export const checkPageState = ({ newPage, currentPage, totalPages, shouldCall })
     const isNotANumber = isNaN(newPage);
     const isEmpty = newPage.length === 0;
 
-    if(isNotANumber) {
+    if (isNotANumber) {
         return currentPage;
-    } else if( isZero && shouldCall) {
+    } else if (isZero && shouldCall) {
         return currentPage;
-    } else if(isBelowZero) {
+    } else if (isBelowZero) {
         return 1;
-    } else if(isAboveTotalPages) {
+    } else if (isAboveTotalPages) {
         return totalPages;
-    } else if(isEmpty && shouldCall){
+    } else if (isEmpty && shouldCall) {
         return currentPage;
     } else {
         return newPage;
@@ -147,8 +147,8 @@ export const checkPageState = ({ newPage, currentPage, totalPages, shouldCall })
 };
 
 export const changePage = ({ state, currentPage }) => {
-    const pagination = { ...state.pagination, currentPage, inputtedPage: currentPage } ;
-    if(state.paginationEventListener) state.paginationEventListener({ pagination });
+    const pagination = { ...state.pagination, currentPage, inputtedPage: currentPage };
+    if (state.paginationEventListener) state.paginationEventListener({ pagination });
     return { ...state, pagination }
 };
 
