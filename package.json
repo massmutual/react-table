@@ -18,7 +18,7 @@
   },
   "author": "Paul Darragh <pmd6624@rit.edu>",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
@@ -26,7 +26,7 @@
     "@babel/preset-react": "^7.0.0",
     "@storybook/addon-a11y": "^5.0.11",
     "@storybook/addon-jest": "^5.0.11",
-    "@storybook/addon-knobs": "^5.0.11",
+    "@storybook/addon-knobs": "^5.3.17",
     "@storybook/addon-options": "^5.0.11",
     "@storybook/react": "^5.0.11",
     "@storybook/storybook-deployer": "^2.8.1",

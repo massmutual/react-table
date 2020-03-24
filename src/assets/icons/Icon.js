@@ -61,14 +61,14 @@ export const sortDirection = ({ direction='none', size=20, icons }) => {
 
     switch (direction) {
         case 'ascending':
-            return SORT_DIRECTION_ICONS
-                ? <span>{icons.ascending}</span>
-                : <span><FaCaretUp size={ size } className="brand-primary-light" /></span>;
-        case 'descending':
-            return SORT_DIRECTION_ICONS
-                ? <span>{icons.descending}</span>
-                : <span><FaCaretDown size={ size } className="brand-primary-light" /></span>;
-        default:
-            return <span />;
-    }
+          return SORT_DIRECTION_ICONS
+          ? <button className="col-sort" aria-label="Sort ascending">{icons.ascending}</button>
+          : <button className="col-sort" aria-label="Sort ascending"><FaCaretUp size={ size } className="brand-primary-light" /></button>;
+    case 'descending':
+        return SORT_DIRECTION_ICONS
+            ? <button className="col-sort" aria-label="Sort descending">{icons.descending}</button>
+            : <button className="col-sort" aria-label="Sort descending"><FaCaretDown size={ size } className="brand-primary-light" /></button>;
+    default:
+        return <button className="col-sort" aria-label="Not sorted" />;
+      }
 };

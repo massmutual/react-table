@@ -128,3 +128,16 @@
 .react-collapsible-theme .highlight {
     background-color: #FFFF00
 }
+
+/* Styles for Sort Buttons */
+.col-sort {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  width: 20px;
+  height:20px;
+  margin: 0;
+  padding: 0;
+}
