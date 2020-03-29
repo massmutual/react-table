@@ -1,18 +1,40 @@
 import { dynamicSort } from './TableActions'
 
-export const resizeTable = ({ width, state }) => {
+export const resizeTable = ({ width, state, isCollapsible = true }) => {
     const { columns } = state;
     let visibleColumns = columns.filter(column => column.isVisible );
 
     let visibleColumnsWidth = 0;
     visibleColumns.map(column => visibleColumnsWidth += column.minWidth);
 
-    state = visibleColumnsWidth > width ?
-        tryToRemoveColumns({ visibleColumnsWidth, width, state }) :
-        tryToAddColumns({ visibleColumnsWidth, width, state });
+    if (isCollapsible) {
+        state = visibleColumnsWidth > width ? 
+                    tryToRemoveColumns({ visibleColumnsWidth, width, state }) :
+                    tryToAddColumns({ visibleColumnsWidth, width, state });
+    } else {
+        state = addAllColumns({ state });
+    }
 
     return state;
 };
+
+// Adds all hidden columns to the state irrespective of the available width
+export const addAllColumns = ({ state }) => {
+    const { columns } = state;
+    const hiddenColumns = Object.assign([], columns.filter(column => !column.isVisible));
+    hiddenColumns.sort(dynamicSort({column: 'priorityLevel'}));
+
+    while (hiddenColumns.length !== 0) {
+        hiddenColumns.shift();
+        if (hiddenColumns.length === 0) {
+            state = addColumn({ state });
+            state = closeAllRows({ state });
+        } else {
+            state = addColumn({ state })
+        }
+    }
+    return state
+}
 
 export const tryToRemoveColumns = ({ visibleColumnsWidth, width, state }) => {
     const { columns } = state;

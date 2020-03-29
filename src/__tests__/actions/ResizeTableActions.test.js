@@ -410,4 +410,37 @@ describe('Resize Table Actions', () => {
 
         expect(actions.addColumn(given)).toEqual(expected);
     });
+
+    it('should add all hidden columns if isCollapsible is false', () => {
+      const given = {
+        isCollapsible: false,
+        width: 149,
+        state: {
+          columns: [
+            { isVisible: true, minWidth: 100, priorityLevel: 1, position: 1, },
+            { isVisible: false, minWidth: 50, priorityLevel: 2, position: 2, },
+            { isVisible: false, minWidth: 90, priorityLevel: 3, position: 3, },
+          ],
+          rows: [
+            { isOpen: false, firstName: 'Paul', },
+            { isOpen: true, firstName: 'Matt', },
+            { isOpen: false, firstName: 'Michelle', },
+          ],
+        }
+      };
+      const expected = {
+          columns: [
+            { isVisible: true, minWidth: 100, priorityLevel: 1, position: 1, },
+            { isVisible: true, minWidth: 50, priorityLevel: 2, position: 2, },
+            { isVisible: true, minWidth: 90, priorityLevel: 3, position: 3, },
+          ],
+          rows: [
+            { isOpen: false, firstName: 'Paul', },
+            { isOpen: false, firstName: 'Matt', },
+            { isOpen: false, firstName: 'Michelle', },
+          ]
+      };
+  
+      expect(actions.resizeTable(given)).toEqual(expected);
+    });  
 });

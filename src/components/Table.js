@@ -106,13 +106,24 @@ export class Table extends Component {
         })
     }
 
+    componentDidUpdate(prevProps){
+        if (prevProps.isCollapsible !== this.props.isCollapsible) {
+            this.resizeTable(this.props.isCollapsible)
+        }
+    }
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.resizeTable);
     }
 
-    resizeTable() {
+    resizeTable(isCollapsible = true) {
+        const { useContainerWidth } = this.state;
+        let width = window.innerWidth
+        if (useContainerWidth && this.tableRef.current) {
+            width = this.tableRef.current.getBoundingClientRect().width
+        }
         this.setState(currentState => {
-            return resizeTable({ width: window.innerWidth, state: currentState })
+            return resizeTable({ width, state: currentState, isCollapsible })
         })
     };
 
