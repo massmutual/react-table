@@ -235,7 +235,7 @@ describe('Table', () => {
         expect(email.sortable).toBe(true);
     });
 
-    it('should allow to change columns after beeing mounted', () => {
+    it('should allow to change columns after being mounted', () => {
         wrapper = mount(<Table {...props} />)
         
         expect(wrapper.state().columns.length).toBe(3)
@@ -285,6 +285,23 @@ describe('Table', () => {
         instance.toggleSearchInputIcons(searchValue);
         expect(wrapper.state().showSearchIcon).toBe(false);
         expect(wrapper.state().showClearIcon).toBe(true);
+    });
+
+    it('should test Resize Table Actions is called when isCollapsible flag changes', () => {
+        wrapper = mount(<Table {...props} />)
+        
+        expect(wrapper.state().columns.length).toBe(3)
+        expect(wrapper.find('thead th')).toHaveLength(3)
+
+        // Now we set the isCollapsible flag to false
+        wrapper.setProps({ isCollapsible: false })
+
+        // Resize table is called
+        expect(resizeTableActions.resizeTable).toHaveBeenCalled();
+
+        // Table state should remain same
+        expect(wrapper.state().columns.length).toBe(3)
+        expect(wrapper.find('thead th')).toHaveLength(2)
     });
 
     describe('when server pagination is used', () => {
