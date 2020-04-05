@@ -157,3 +157,9 @@ export const unsorted = {
     }),
     rows: generateFakeData({ totalRows: 1000 })
 };
+
+export const expandAllColumnsProps = {
+    columns: getColumns(),
+    rows: generateFakeData({ totalRows: 1000 }),
+    isCollapsible: false,
+};

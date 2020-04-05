@@ -38,6 +38,7 @@ export class Table extends Component {
             theme = 'react-collapsible-theme',
             showSearchIcon = true,
             showClearIcon = false,
+            isCollapsible = true,
         } = props;
 
         this.state = {
@@ -108,7 +109,7 @@ export class Table extends Component {
 
     componentDidUpdate(prevProps){
         if (prevProps.isCollapsible !== this.props.isCollapsible) {
-            this.resizeTable(this.props.isCollapsible)
+            this.resizeTable()
         }
     }
 
@@ -116,14 +117,10 @@ export class Table extends Component {
         window.removeEventListener('resize', this.resizeTable);
     }
 
-    resizeTable(isCollapsible = true) {
-        const { useContainerWidth } = this.state;
-        let width = window.innerWidth
-        if (useContainerWidth && this.tableRef.current) {
-            width = this.tableRef.current.getBoundingClientRect().width
-        }
+    resizeTable() {
+        const { isCollapsible } = this.props;
         this.setState(currentState => {
-            return resizeTable({ width, state: currentState, isCollapsible })
+            return resizeTable({ width: window.innerWidth, state: currentState, isCollapsible })
         })
     };
 

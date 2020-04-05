@@ -16,6 +16,7 @@ import {
     customIconProps,
     differentTheme,
     unsorted,
+    expandAllColumnsProps,
 } from './props';
 
 storiesOf('React Collapsing Table', module)
@@ -35,6 +36,7 @@ storiesOf('React Collapsing Table', module)
     .add('Columns with sort feature disabled', () => <ReactCollapsingTable {...unsorted} />)
     .add('Custom theme, no applied styles', () => <ReactCollapsingTable {...differentTheme} />)
     .add('Dynamic table columns', () => {
-        const dynamicColumns = basicTableProps.columns.filter(column => boolean(column.label, true))
+        const dynamicColumns = basicTableProps.columns.filter(column => !!column.label)
         return <ReactCollapsingTable {...basicTableProps} columns={dynamicColumns} />
-    });
+    })
+    .add('Expand all columns irrespective of available width', () => <ReactCollapsingTable {...expandAllColumnsProps} />);
