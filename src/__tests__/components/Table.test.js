@@ -301,7 +301,7 @@ describe('Table', () => {
 
         // Table state should remain same
         expect(wrapper.state().columns.length).toBe(3)
-        expect(wrapper.find('thead th')).toHaveLength(2)
+        expect(wrapper.find('thead th')).toHaveLength(3)
     });
 
     describe('when server pagination is used', () => {
