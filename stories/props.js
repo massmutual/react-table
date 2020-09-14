@@ -82,26 +82,27 @@ export const sortableCoulmns = () => {
 
 export const basicTableProps = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 5
+     }),
 };
 
 export const basicTablePropsPaginationAndSearchShow = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
     showPagination: true,
     showSearch: true,
 };
 
 export const sortColumnAndDirectionProps = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
     column: 'lastName',
     direction: 'descending',
 };
 
 export const rowSizeProps = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 100 }),
     rowSize: 25,
 };
 
@@ -121,12 +122,12 @@ export const paginationListenerProps = {
 
 export const sortableColumnsProps = {
     columns: sortableCoulmns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
 };
 
 export const customPaginationComponent = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
     showPagination: true,
     showSearch: true,
     CustomPagination: TextInputPagination,
@@ -135,7 +136,7 @@ export const customPaginationComponent = {
 export const customIconProps = {
     id: 'customIdForTheTable',
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
     icons: {
         ascending: <svg width="10" height="10"><circle cx="5" cy="5" r="4" stroke="blue" strokeWidth="1" fill="red" /></svg>,
         descending: <svg width="10" height="10"><circle cx="5" cy="5" r="4" stroke="red" strokeWidth="1" fill="blue" /></svg>,
@@ -146,7 +147,7 @@ export const customIconProps = {
 
 export const differentTheme = {
     columns: getColumns(),
-    rows: generateFakeData({ totalRows: 1000 }),
+    rows: generateFakeData({ totalRows: 10 }),
     theme: 'notTheDefault'
 };
 
@@ -155,5 +156,5 @@ export const unsorted = {
         column.sortable = false;
         return column;
     }),
-    rows: generateFakeData({ totalRows: 1000 })
+    rows: generateFakeData({ totalRows: 10 })
 };
